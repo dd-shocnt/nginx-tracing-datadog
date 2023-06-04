@@ -43,7 +43,10 @@ services:
       dockerfile: Dockerfile
     container_name: sample-nginx
     labels:
-      com.datadoghq.ad.logs: '[{"source": "nginx", "service": "sample-nginx"}]'
+      com.datadoghq.ad.check_names: '["nginx"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"nginx_status_url": "http://%%host%%:81/nginx_status/"}]'
+      com.datadoghq.ad.logs: '[{"source": "nginx", "service": "nginx"}]'
     volumes:
       - './nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
       - './nginx/dd-config.json:/etc/nginx/dd-config.json:ro'
@@ -56,8 +59,8 @@ services:
     environment:
       - DD_API_KEY
       - DD_SITE=datadoghq.com
-      - DD_ENV=macbook
-      - DD_HOSTNAME=macbook
+      - DD_ENV=su-docker
+      - DD_HOSTNAME=su-docker
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLET_ALL=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
